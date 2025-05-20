@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -19,9 +18,8 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.mensaje || 'Error');
+      if (!res.ok) throw new Error(data.mensaje || 'Error al iniciar sesión');
 
-      // ✅ Guardar datos y redirigir
       localStorage.setItem('token', data.token);
       localStorage.setItem('usuario', JSON.stringify(data.user));
       localStorage.setItem('mensaje_inicio', `¡Bienvenido, ${data.user.nombre}!`);
@@ -32,28 +30,52 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow p-4 rounded mt-4">
-      <h2 className="text-xl font-bold mb-4">Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Correo"
-          className="form-control mb-2"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          className="form-control mb-3"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-danger w-100">Entrar</button>
-        {mensaje && <p className="text-muted mt-3">{mensaje}</p>}
-      </form>
+    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
+      <div className="card shadow p-4" style={{ maxWidth: '400px', width: '100%' }}>
+        <div className="text-center mb-3">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+            alt="Usuario"
+            width="64"
+            className="mb-2"
+          />
+          <h3 className="mb-0">Iniciar Sesión</h3>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="correo@example.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="••••••••"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">Entrar</button>
+
+          {mensaje && (
+            <div className="alert alert-danger mt-3 text-center p-2">
+              {mensaje}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

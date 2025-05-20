@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import api from '../lib/axios';
+import CardReceta from '../components/CardReceta';
 
 export default function Page() {
   const [recetas, setRecetas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [mensaje, setMensaje] = useState('');
+  const [expandida, setExpandida] = useState(null);
 
   useEffect(() => {
     // Cargar mensaje de bienvenida si viene del login
@@ -30,6 +32,10 @@ export default function Page() {
       }
     };
 
+    const toggleExpandir = (id) => {
+    setExpandida(expandida === id ? null : id);
+    };
+
     obtenerRecetas();
   }, []);
 
@@ -41,22 +47,19 @@ export default function Page() {
         </div>
       )}
 
-      <h1>Recetas Tlaxcaltecas</h1>
+      <h1 className="mb-4">Recetas Tlaxcaltecas</h1>
 
       {loading && <p>Cargando recetas...</p>}
       {error && <p className="text-danger">{error}</p>}
 
-      <ul className="list-group mt-3">
+      {/* Tarjetas de recetas */}
+      <div className="row g-4">
         {recetas.map((receta) => (
-          <li key={receta._id} className="list-group-item">
-            <h5>{receta.nombre}</h5>
-            <p><strong>Calorías:</strong> {receta.calorias}</p>
-            <p><strong>Historia:</strong> {receta.historia}</p>
-            <p><strong>Ingredientes:</strong> {receta.ingredientes?.join(', ')}</p>
-            <p><strong>Pasos:</strong> {receta.procedimiento?.join(' → ')}</p>
-          </li>
+          <div className="col-sm-12 col-md-6 col-lg-4" key={receta._id}>
+            <CardReceta receta={receta} />
+          </div>
         ))}
-      </ul>
+      </div>
     </main>
   );
 }

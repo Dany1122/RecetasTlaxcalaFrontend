@@ -27,53 +27,58 @@ export default function Header() {
   };
 
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
-        <Link href="/" className="navbar-brand fw-bold">Recetas Tlaxcaltecas</Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+      <Link href="/" className="navbar-brand fw-bold text-white">Recetas Tlaxcaltecas</Link>
 
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <div className="collapse navbar-collapse justify-content-between">
+        <ul className="navbar-nav mb-2 mb-lg-0">
+          <li className="nav-item">
+            <Link href="/" className="nav-link text-white">Inicio</Link>
+          </li>
+          {!autenticado ? (
+            <>
             <li className="nav-item">
-              <Link href="/" className="nav-link">Inicio</Link>
+              <Link href="/login" className="nav-link text-white">Iniciar Sesión</Link>
             </li>
-
-            {!autenticado && (
+            <li className="nav-item">
+                  <Link href="/logout" className="nav-link  text-white">Regístrate</Link>
+            </li>
+            </>
+          ) : (
+            <>
               <li className="nav-item">
-                <Link href="/login" className="nav-link">Iniciar Sesión</Link>
+                <Link href="/nueva-receta" className="nav-link text-white">Agregar Receta</Link>
               </li>
-            )}
-
-            {autenticado && (
-              <>
-                <li className="nav-item">
-                  <Link href="/nueva-receta" className="nav-link">Agregar Receta</Link>
-                </li>
-                <li className="nav-item">
-                  <Link href="/mis-recetas" className="nav-link">Mis Recetas</Link>
-                </li>
-                <li className="nav-item">
-                  <button onClick={cerrarSesion} className="btn btn-outline-danger ms-3">
-                    Cerrar sesión
-                  </button>
-                </li>
-              </>
-            )}
-          </ul>
-
-          {autenticado && usuario && (
-            <div className="d-flex align-items-center">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                alt="usuario"
-                width="32"
-                height="32"
-                className="me-2 rounded-circle"
-              />
-              <span className="navbar-text">Bienvenido, {usuario.nombre}</span>
-            </div>
+              <li className="nav-item">
+                <Link href="/mis-recetas" className="nav-link text-white">Mis Recetas</Link>
+              </li>
+              <li className="nav-item">
+                <button onClick={cerrarSesion} className="btn btn-outline-light ms-3">
+                  Cerrar sesión
+                </button>
+              </li>
+            </>
           )}
-        </div>
-      </nav>
-    </header>
+        </ul>
+
+        {autenticado && usuario && (
+          <div className="d-flex align-items-center text-white">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              alt="usuario"
+              width="32"
+              height="32"
+              className="me-2 rounded-circle"
+            />
+             <Link href="/perfil" className="nav-link">
+                Bienvenido, {usuario.nombre}
+             </Link>
+          </div>
+
+
+        )}
+
+      </div>
+    </nav>
   );
 }
